@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fuel Smart - Zoho Implementation Status</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #E42527;
+      --red-dark: #b81d1f;
+      --red-light: #fdeaea;
+      --gray-900: #1a1a1a;
+      --gray-700: #3d3d3d;
+      --gray-500: #6b6b6b;
+      --gray-200: #e8e8e8;
+      --gray-100: #f5f5f5;
+      --white: #ffffff;
+      --green: #1a8a3c;
+      --green-light: #e8f5ee;
+      --amber: #c17d00;
+      --amber-light: #fff8e6;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--gray-100);
+      color: var(--gray-900);
+      line-height: 1.6;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--white);
+      border-top: 4px solid var(--red);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      padding: 0 2rem;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1.5rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--red);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-text h1 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gray-900);
+    }
+
+    .brand-text p {
+      font-size: 0.78rem;
+      color: var(--gray-500);
+    }
+
+    .header-meta {
+      text-align: right;
+      font-size: 0.8rem;
+      color: var(--gray-500);
+    }
+
+    .header-meta strong {
+      display: block;
+      color: var(--gray-700);
+      font-size: 0.85rem;
+    }
+
+    /* MAIN */
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* OVERVIEW BANNER */
+    .overview {
+      background: var(--white);
+      border-radius: 10px;
+      border: 1px solid var(--gray-200);
+      padding: 1.5rem 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--red);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--gray-500);
+      margin-top: 0.25rem;
+    }
+
+    .stat-divider {
+      border: none;
+      border-left: 1px solid var(--gray-200);
+    }
+
+    /* SECTION */
+    .section {
+      background: var(--white);
+      border-radius: 10px;
+      border: 1px solid var(--gray-200);
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .section-header h2 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--gray-900);
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .badge-live {
+      background: var(--green-light);
+      color: var(--green);
+    }
+
+    .badge-progress {
+      background: var(--amber-light);
+      color: var(--amber);
+    }
+
+    .badge-pending {
+      background: var(--gray-100);
+      color: var(--gray-500);
+    }
+
+    .section-body {
+      padding: 1.25rem 1.5rem;
+    }
+
+    /* ITEM LIST */
+    .item-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .item-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+    }
+
+    .icon-done { background: var(--green-light); color: var(--green); }
+    .icon-progress { background: var(--amber-light); color: var(--amber); }
+    .icon-pending { background: var(--gray-200); color: var(--gray-500); }
+
+    .item-text {
+      font-size: 0.88rem;
+      color: var(--gray-700);
+      line-height: 1.5;
+    }
+
+    .item-text strong {
+      color: var(--gray-900);
+      font-weight: 600;
+    }
+
+    /* USERS */
+    .users-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .user-card {
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+    }
+
+    .user-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--gray-900);
+    }
+
+    .user-role {
+      font-size: 0.78rem;
+      color: var(--gray-500);
+      margin-top: 0.1rem;
+    }
+
+    .user-status {
+      margin-top: 0.5rem;
+    }
+
+    /* TWO-COL */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .two-col { grid-template-columns: 1fr; }
+      .stat-divider { display: none; }
+    }
+
+    /* NEXT STEPS */
+    .steps-list {
+      counter-reset: steps;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .steps-list li {
+      counter-increment: steps;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.88rem;
+      color: var(--gray-700);
+    }
+
+    .steps-list li::before {
+      content: counter(steps);
+      background: var(--red);
+      color: white;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    /* FOOTER */
+    footer {
+      max-width: 900px;
+      margin: 0 auto 2rem;
+      padding: 0 1.5rem;
+      font-size: 0.78rem;
+      color: var(--gray-500);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    footer a {
+      color: var(--red);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon">FS</div>
+        <div class="brand-text">
+          <h1>Fuel Smart</h1>
+          <p>Zoho Implementation - Progress Report</p>
+        </div>
+      </div>
+      <div class="header-meta">
+        <strong>Month 1 Complete</strong>
+        April 2026
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- OVERVIEW -->
+    <div class="overview">
+      <div class="stat">
+        <div class="stat-number">1</div>
+        <div class="stat-label">Month Completed</div>
+      </div>
+      <hr class="stat-divider" />
+      <div class="stat">
+        <div class="stat-number">2</div>
+        <div class="stat-label">Zoho Products Active</div>
+      </div>
+      <hr class="stat-divider" />
+      <div class="stat">
+        <div class="stat-number">3</div>
+        <div class="stat-label">Users Onboarded</div>
+      </div>
+      <hr class="stat-divider" />
+      <div class="stat">
+        <div class="stat-number">4</div>
+        <div class="stat-label">Modules Live</div>
+      </div>
+    </div>
+
+    <!-- ZOHO BOOKS -->
+    <div class="section">
+      <div class="section-header">
+        <h2>Zoho Books - Accounting</h2>
+        <span class="badge badge-live">Live</span>
+      </div>
+      <div class="section-body">
+        <ul class="item-list">
+          <li class="item">
+            <div class="item-icon icon-done">&#10003;</div>
+            <div class="item-text"><strong>Inventory tracking</strong> - Items and stock levels configured and actively managed.</div>
+          </li>
+          <li class="item">
+            <div class="item-icon icon-done">&#10003;</div>
+            <div class="item-text"><strong>Sales recording</strong> - Sales transactions being logged and reconciled.</div>
+          </li>
+          <li class="item">
+            <div class="item-icon icon-done">&#10003;</div>
+            <div class="item-text"><strong>Bills and purchases</strong> - Vendor bills and purchase orders tracked within the system.</div>
+          </li>
+          <li class="item">
+            <div class="item-icon icon-done">&#10003;</div>
+            <div class="item-text"><strong>Expenses</strong> - Expense entries operational and categorised.</div>
+          </li>
+          <li class="item">
+            <div class="item-icon icon-done">&#10003;</div>
+            <div class="item-text"><strong>Accountant and assistant onboarded</strong> - Both users active and operating the platform.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ZOHO PEOPLE -->
+    <div class="section">
+      <div class="section-header">
+        <h2>Zoho People - HR</h2>
+        <span class="badge badge-progress">In Progress</span>
+      </div>
+      <div class="section-body" style="display:flex;flex-direction:column;gap:1.25rem;">
+
+        <div>
+          <p style="font-size:0.82rem;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.75rem;">User Onboarding</p>
+          <div class="users-grid">
+            <div class="user-card">
+              <div class="user-name">Accountant</div>
+              <div class="user-role">Finance</div>
+              <div class="user-status"><span class="badge badge-live">Active</span></div>
+            </div>
+            <div class="user-card">
+              <div class="user-name">Manager</div>
+              <div class="user-role">Operations</div>
+              <div class="user-status"><span class="badge badge-live">Active</span></div>
+            </div>
+            <div class="user-card">
+              <div class="user-name">3rd User</div>
+              <div class="user-role">Pending</div>
+              <div class="user-status"><span class="badge badge-pending">On Hold</span></div>
+            </div>
+          </div>
+        </div>
+
+        <ul class="item-list">
+          <li class="item">
+            <div class="item-icon icon-done">&#10003;</div>
+            <div class="item-text"><strong>Requisition form</strong> - Up and operational. Approval hierarchy refinement in progress.</div>
+          </li>
+          <li class="item">
+            <div class="item-icon icon-progress">&#9679;</div>
+            <div class="item-text"><strong>Approval workflow</strong> - 3-level chain (Supervisor to Manager to Accountant to Chairman) being configured.</div>
+          </li>
+          <li class="item">
+            <div class="item-icon icon-pending">&#9632;</div>
+            <div class="item-text"><strong>Attendance system</strong> - On hold pending physical biometric/attendance device installation at the office.</div>
+          </li>
+          <li class="item">
+            <div class="item-icon icon-progress">&#9679;</div>
+            <div class="item-text"><strong>Manager reports</strong> - Live. Working through formatting adjustments with the manager to ensure smooth adoption.</div>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+
+    <!-- NEXT STEPS -->
+    <div class="section">
+      <div class="section-header">
+        <h2>Next Steps - Month 2</h2>
+      </div>
+      <div class="section-body">
+        <ol class="steps-list">
+          <li>Complete and test the 3-level requisition approval chain before end of April.</li>
+          <li>Train the Chairman on the Zoho Books dashboard and key reports.</li>
+          <li>Onboard the 3rd user (Zoho People) once the attendance hardware is in place.</li>
+          <li>Complete manager adoption of the reports module.</li>
+          <li>Review month 2 scope and confirm continuation terms.</li>
+        </ol>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <span>Prepared by <strong>Mustapha Ibrahim</strong> - Solutions Consultant</span>
+    <span>Last updated: <strong>April 2026</strong></span>
+  </footer>
+
+</body>
+</html>
