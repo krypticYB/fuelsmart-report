@@ -3,462 +3,986 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fuel Smart - Zoho Implementation Status</title>
+  <title>Fuel Smart - Zoho Implementation Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --red: #E42527;
-      --red-dark: #b81d1f;
-      --red-light: #fdeaea;
-      --gray-900: #1a1a1a;
-      --gray-700: #3d3d3d;
-      --gray-500: #6b6b6b;
-      --gray-200: #e8e8e8;
-      --gray-100: #f5f5f5;
-      --white: #ffffff;
-      --green: #1a8a3c;
-      --green-light: #e8f5ee;
-      --amber: #c17d00;
-      --amber-light: #fff8e6;
+      --red:        #c0392b;
+      --red-muted:  #f5e6e5;
+      --navy:       #1e2d3d;
+      --navy-light: #2c3e50;
+      --bg:         #f0f2f5;
+      --surface:    #ffffff;
+      --border:     #e0e4ea;
+      --text:       #1e2d3d;
+      --muted:      #6b7a8d;
+      --green:      #1a8a3c;
+      --green-bg:   #eaf5ee;
+      --amber:      #9a6500;
+      --amber-bg:   #fef8ec;
+      --blue:       #1a5fa8;
+      --blue-bg:    #eaf0fb;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--gray-100);
-      color: var(--gray-900);
-      line-height: 1.6;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.65;
     }
 
-    /* HEADER */
-    header {
-      background: var(--white);
-      border-top: 4px solid var(--red);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-      padding: 0 2rem;
+    /* ─── HERO ─── */
+    .hero {
+      background: var(--navy);
+      color: white;
+      padding: 0;
     }
 
-    .header-inner {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 1.5rem 0;
+    .hero-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 1rem;
+      padding: 1.5rem 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
       flex-wrap: wrap;
+      gap: 1rem;
     }
 
-    .brand {
+    .logo-group {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.85rem;
     }
 
-    .brand-icon {
-      width: 40px;
-      height: 40px;
+    .logo-mark {
+      width: 44px;
+      height: 44px;
       background: var(--red);
-      border-radius: 8px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
       font-weight: 700;
       font-size: 1rem;
       letter-spacing: -0.5px;
+      color: white;
+      flex-shrink: 0;
     }
 
-    .brand-text h1 {
-      font-size: 1.1rem;
+    .logo-group h1 {
+      font-size: 1.15rem;
       font-weight: 700;
-      color: var(--gray-900);
+      color: white;
     }
 
-    .brand-text p {
+    .logo-group p {
       font-size: 0.78rem;
-      color: var(--gray-500);
+      color: rgba(255,255,255,0.5);
+      margin-top: 1px;
     }
 
-    .header-meta {
-      text-align: right;
-      font-size: 0.8rem;
-      color: var(--gray-500);
+    .hero-badge {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px;
+      padding: 0.4rem 0.9rem;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.75);
     }
 
-    .header-meta strong {
-      display: block;
-      color: var(--gray-700);
-      font-size: 0.85rem;
+    .hero-badge strong {
+      color: white;
+      font-weight: 600;
     }
 
-    /* MAIN */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      padding: 2rem 3rem;
+      gap: 0;
+    }
+
+    @media (max-width: 640px) {
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
+      .hero-top { padding: 1.25rem 1.5rem; }
+      .hero-stats { padding: 1.5rem; }
+      main { padding: 1.25rem 1rem; }
+    }
+
+    .hero-stat {
+      text-align: center;
+      padding: 0.5rem 1rem;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .hero-stat:last-child { border-right: none; }
+
+    .hero-stat-num {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: white;
+      line-height: 1;
+    }
+
+    .hero-stat-num span {
+      color: var(--red);
+    }
+
+    .hero-stat-label {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 0.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── MAIN ─── */
     main {
-      max-width: 900px;
-      margin: 2rem auto;
-      padding: 0 1.5rem;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
     }
 
-    /* OVERVIEW BANNER */
-    .overview {
-      background: var(--white);
-      border-radius: 10px;
-      border: 1px solid var(--gray-200);
-      padding: 1.5rem 2rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .stat {
-      text-align: center;
-    }
-
-    .stat-number {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--red);
-      line-height: 1;
-    }
-
-    .stat-label {
-      font-size: 0.8rem;
-      color: var(--gray-500);
-      margin-top: 0.25rem;
-    }
-
-    .stat-divider {
-      border: none;
-      border-left: 1px solid var(--gray-200);
-    }
-
-    /* SECTION */
-    .section {
-      background: var(--white);
-      border-radius: 10px;
-      border: 1px solid var(--gray-200);
+    /* ─── CARD ─── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
       overflow: hidden;
     }
 
-    .section-header {
+    .card-head {
       padding: 1rem 1.5rem;
-      border-bottom: 1px solid var(--gray-200);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .card-head-left {
       display: flex;
       align-items: center;
       gap: 0.6rem;
     }
 
-    .section-header h2 {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--gray-900);
+    .card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
+    .card-icon svg { width: 16px; height: 16px; }
+
+    .ci-red   { background: var(--red-muted); color: var(--red); }
+    .ci-green { background: var(--green-bg);  color: var(--green); }
+    .ci-navy  { background: #e8ecf0;          color: var(--navy); }
+    .ci-amber { background: var(--amber-bg);  color: var(--amber); }
+
+    .card-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .card-sub {
+      font-size: 0.77rem;
+      color: var(--muted);
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+
+    /* ─── BADGE ─── */
     .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
       font-size: 0.7rem;
       font-weight: 600;
-      padding: 0.2rem 0.6rem;
+      padding: 0.25rem 0.6rem;
       border-radius: 999px;
       text-transform: uppercase;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.04em;
     }
 
-    .badge-live {
-      background: var(--green-light);
-      color: var(--green);
+    .badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.7;
     }
 
-    .badge-progress {
-      background: var(--amber-light);
-      color: var(--amber);
+    .b-live    { background: var(--green-bg);  color: var(--green); }
+    .b-prog    { background: var(--amber-bg);  color: var(--amber); }
+    .b-hold    { background: #f0f2f5;          color: var(--muted); }
+    .b-done    { background: var(--blue-bg);   color: var(--blue); }
+
+    /* ─── SECTION LABEL ─── */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
     }
 
-    .badge-pending {
-      background: var(--gray-100);
-      color: var(--gray-500);
-    }
-
-    .section-body {
-      padding: 1.25rem 1.5rem;
-    }
-
-    /* ITEM LIST */
-    .item-list {
+    /* ─── CHECKLIST ─── */
+    .checklist {
       list-style: none;
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
     }
 
-    .item {
+    .checklist li {
       display: flex;
       align-items: flex-start;
       gap: 0.75rem;
-    }
-
-    .item-icon {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      margin-top: 0.1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.65rem;
-    }
-
-    .icon-done { background: var(--green-light); color: var(--green); }
-    .icon-progress { background: var(--amber-light); color: var(--amber); }
-    .icon-pending { background: var(--gray-200); color: var(--gray-500); }
-
-    .item-text {
-      font-size: 0.88rem;
-      color: var(--gray-700);
+      font-size: 0.86rem;
+      color: #3d4a5c;
       line-height: 1.5;
     }
 
-    .item-text strong {
-      color: var(--gray-900);
-      font-weight: 600;
+    .check-icon {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
     }
 
-    /* USERS */
-    .users-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 0.75rem;
+    .ch-done  { background: var(--green-bg); color: var(--green); }
+    .ch-prog  { background: var(--amber-bg); color: var(--amber); }
+    .ch-hold  { background: #f0f2f5;         color: var(--muted); }
+
+    strong { font-weight: 600; color: var(--text); }
+
+    /* ─── PROGRESS BAR ─── */
+    .prog-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-bottom: 1rem;
     }
 
-    .user-card {
-      border: 1px solid var(--gray-200);
-      border-radius: 8px;
-      padding: 0.85rem 1rem;
+    .prog-row:last-child { margin-bottom: 0; }
+
+    .prog-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
     }
 
-    .user-name {
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--gray-900);
+    .prog-label { color: var(--text); font-weight: 500; }
+    .prog-pct   { color: var(--muted); }
+
+    .prog-track {
+      height: 6px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
     }
 
-    .user-role {
-      font-size: 0.78rem;
-      color: var(--gray-500);
-      margin-top: 0.1rem;
+    .prog-fill {
+      height: 100%;
+      border-radius: 99px;
     }
 
-    .user-status {
-      margin-top: 0.5rem;
-    }
+    .pf-green { background: var(--green); }
+    .pf-amber { background: #f0a500; }
+    .pf-red   { background: var(--red); }
 
-    /* TWO-COL */
+    /* ─── TWO COL ─── */
     .two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
+      gap: 1.25rem;
     }
 
-    @media (max-width: 600px) {
-      .two-col { grid-template-columns: 1fr; }
-      .stat-divider { display: none; }
+    @media (max-width: 620px) { .two-col { grid-template-columns: 1fr; } }
+
+    /* ─── USERS ─── */
+    .users-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.85rem;
     }
 
-    /* NEXT STEPS */
-    .steps-list {
-      counter-reset: steps;
+    @media (max-width: 620px) { .users-row { grid-template-columns: 1fr 1fr; } }
+
+    .user-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+
+    .user-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 0.65rem;
+    }
+
+    .ua-muted { background: var(--border); color: var(--muted); }
+
+    .user-name { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+    .user-role { font-size: 0.76rem; color: var(--muted); margin-bottom: 0.5rem; }
+
+    /* ─── ISSUE CARD ─── */
+    .issue-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .issue-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .issue-title {
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .issue-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .issue-fix {
+      font-size: 0.81rem;
+      color: var(--green);
+      font-weight: 500;
+      padding-top: 0.35rem;
+      border-top: 1px solid var(--green-bg);
+    }
+
+    /* ─── TIMELINE ─── */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .tl-item {
+      display: flex;
+      gap: 1rem;
+      padding-bottom: 1.25rem;
+      position: relative;
+    }
+
+    .tl-item:last-child { padding-bottom: 0; }
+
+    .tl-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      width: 32px;
+    }
+
+    .tl-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      margin-top: 4px;
+      flex-shrink: 0;
+      z-index: 1;
+    }
+
+    .tl-line {
+      flex: 1;
+      width: 2px;
+      background: var(--border);
+      margin-top: 4px;
+    }
+
+    .tl-item:last-child .tl-line { display: none; }
+
+    .dot-done  { background: var(--green); }
+    .dot-prog  { background: #f0a500; }
+    .dot-plan  { background: var(--border); border: 2px solid var(--muted); }
+
+    .tl-content {
+      flex: 1;
+      padding-bottom: 0;
+    }
+
+    .tl-date {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 0.15rem;
+    }
+
+    .tl-title {
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .tl-desc {
+      font-size: 0.81rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+      line-height: 1.5;
+    }
+
+    /* ─── NEXT STEPS ─── */
+    .steps {
+      counter-reset: s;
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 0.85rem;
     }
 
-    .steps-list li {
-      counter-increment: steps;
+    .steps li {
+      counter-increment: s;
       display: flex;
+      gap: 0.85rem;
       align-items: flex-start;
-      gap: 0.75rem;
-      font-size: 0.88rem;
-      color: var(--gray-700);
     }
 
-    .steps-list li::before {
-      content: counter(steps);
-      background: var(--red);
+    .steps li::before {
+      content: counter(s);
+      background: var(--navy);
       color: white;
-      width: 20px;
-      height: 20px;
+      min-width: 22px;
+      height: 22px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
       flex-shrink: 0;
-      margin-top: 0.1rem;
+      margin-top: 1px;
     }
 
-    /* FOOTER */
+    .steps li .step-body {
+      flex: 1;
+    }
+
+    .step-title {
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .step-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.15rem;
+    }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.25rem 0;
+    }
+
+    /* ─── FOOTER ─── */
     footer {
-      max-width: 900px;
+      max-width: 980px;
       margin: 0 auto 2rem;
       padding: 0 1.5rem;
-      font-size: 0.78rem;
-      color: var(--gray-500);
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 0.5rem;
-    }
-
-    footer a {
-      color: var(--red);
-      text-decoration: none;
+      font-size: 0.76rem;
+      color: var(--muted);
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="header-inner">
-      <div class="brand">
-        <div class="brand-icon">FS</div>
-        <div class="brand-text">
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-top">
+      <div class="logo-group">
+        <div class="logo-mark">FS</div>
+        <div>
           <h1>Fuel Smart</h1>
-          <p>Zoho Implementation - Progress Report</p>
+          <p>Zoho Implementation &mdash; Month 1 Progress Report</p>
         </div>
       </div>
-      <div class="header-meta">
-        <strong>Month 1 Complete</strong>
-        April 2026
+      <div class="hero-badge">
+        Reporting period: <strong>April 2026</strong>
       </div>
     </div>
-  </header>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">1<span>/2</span></div>
+        <div class="hero-stat-label">Months Completed</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">2</div>
+        <div class="hero-stat-label">Zoho Products Active</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">2<span>/3</span></div>
+        <div class="hero-stat-label">Users Onboarded</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">4</div>
+        <div class="hero-stat-label">Modules Live</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">1</div>
+        <div class="hero-stat-label">Blocked Item</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">67<span>%</span></div>
+        <div class="hero-stat-label">Overall Completion</div>
+      </div>
+    </div>
+  </div>
 
   <main>
 
-    <!-- OVERVIEW -->
-    <div class="overview">
-      <div class="stat">
-        <div class="stat-number">1</div>
-        <div class="stat-label">Month Completed</div>
+    <!-- EXECUTIVE SUMMARY -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-head-left">
+          <div class="card-icon ci-navy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+          <div>
+            <div class="card-title">Executive Summary</div>
+            <div class="card-sub">Overall engagement status</div>
+          </div>
+        </div>
+        <span class="badge b-prog">Month 1 Complete</span>
       </div>
-      <hr class="stat-divider" />
-      <div class="stat">
-        <div class="stat-number">2</div>
-        <div class="stat-label">Zoho Products Active</div>
-      </div>
-      <hr class="stat-divider" />
-      <div class="stat">
-        <div class="stat-number">3</div>
-        <div class="stat-label">Users Onboarded</div>
-      </div>
-      <hr class="stat-divider" />
-      <div class="stat">
-        <div class="stat-number">4</div>
-        <div class="stat-label">Modules Live</div>
+      <div class="card-body">
+        <p style="font-size:0.87rem;color:#3d4a5c;line-height:1.7;max-width:760px;">
+          Month one of the Zoho implementation engagement for Fuel Smart has been completed. Zoho Books is fully operational with core accounting workflows live including inventory, sales, bills, purchases, and expenses. The accountant and assistant are actively using the platform. Zoho People has been set up with the requisition form and HR workflows; attendance integration is on hold pending physical hardware installation. Approval hierarchy configuration and manager adoption of the reports module are the two active items being resolved before month end.
+        </p>
       </div>
     </div>
 
-    <!-- ZOHO BOOKS -->
-    <div class="section">
-      <div class="section-header">
-        <h2>Zoho Books - Accounting</h2>
-        <span class="badge badge-live">Live</span>
+    <!-- BY THE NUMBERS -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-head-left">
+          <div class="card-icon ci-green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
+          </div>
+          <div>
+            <div class="card-title">By the Numbers</div>
+            <div class="card-sub">Zoho Books activity recorded this month</div>
+          </div>
+        </div>
+        <span class="badge b-live">Zoho Books</span>
       </div>
-      <div class="section-body">
-        <ul class="item-list">
-          <li class="item">
-            <div class="item-icon icon-done">&#10003;</div>
-            <div class="item-text"><strong>Inventory tracking</strong> - Items and stock levels configured and actively managed.</div>
-          </li>
-          <li class="item">
-            <div class="item-icon icon-done">&#10003;</div>
-            <div class="item-text"><strong>Sales recording</strong> - Sales transactions being logged and reconciled.</div>
-          </li>
-          <li class="item">
-            <div class="item-icon icon-done">&#10003;</div>
-            <div class="item-text"><strong>Bills and purchases</strong> - Vendor bills and purchase orders tracked within the system.</div>
-          </li>
-          <li class="item">
-            <div class="item-icon icon-done">&#10003;</div>
-            <div class="item-text"><strong>Expenses</strong> - Expense entries operational and categorised.</div>
-          </li>
-          <li class="item">
-            <div class="item-icon icon-done">&#10003;</div>
-            <div class="item-text"><strong>Accountant and assistant onboarded</strong> - Both users active and operating the platform.</div>
-          </li>
-        </ul>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1rem;">
+          <div style="border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center;">
+            <div style="font-size:1.6rem;font-weight:700;color:var(--green);">5</div>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:0.2rem;text-transform:uppercase;letter-spacing:0.04em;">Active Modules</div>
+            <div style="font-size:0.74rem;color:var(--text);margin-top:0.4rem;">Inventory, Sales, Bills, Purchases, Expenses</div>
+          </div>
+          <div style="border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center;">
+            <div style="font-size:1.6rem;font-weight:700;color:var(--blue);">2</div>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:0.2rem;text-transform:uppercase;letter-spacing:0.04em;">Finance Users</div>
+            <div style="font-size:0.74rem;color:var(--text);margin-top:0.4rem;">Accountant + Assistant actively entering data</div>
+          </div>
+          <div style="border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center;">
+            <div style="font-size:1.6rem;font-weight:700;color:var(--amber);">1</div>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:0.2rem;text-transform:uppercase;letter-spacing:0.04em;">Requisition Form</div>
+            <div style="font-size:0.74rem;color:var(--text);margin-top:0.4rem;">Live on Zoho People, approval chain in progress</div>
+          </div>
+          <div style="border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center;">
+            <div style="font-size:1.6rem;font-weight:700;color:var(--red);">3</div>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:0.2rem;text-transform:uppercase;letter-spacing:0.04em;">Approval Levels</div>
+            <div style="font-size:0.74rem;color:var(--text);margin-top:0.4rem;">Supervisor &rarr; Manager &rarr; Accountant &rarr; Chairman</div>
+          </div>
+          <div style="border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center;">
+            <div style="font-size:1.6rem;font-weight:700;color:var(--muted);">0</div>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:0.2rem;text-transform:uppercase;letter-spacing:0.04em;">Attendance Records</div>
+            <div style="font-size:0.74rem;color:var(--text);margin-top:0.4rem;">Not started &mdash; hardware not yet installed</div>
+          </div>
+          <div style="border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center;">
+            <div style="font-size:1.6rem;font-weight:700;color:var(--navy);">Mth 2</div>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:0.2rem;text-transform:uppercase;letter-spacing:0.04em;">Renewal Due</div>
+            <div style="font-size:0.74rem;color:var(--text);margin-top:0.4rem;">Scope and terms to be confirmed for May 2026</div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- ZOHO PEOPLE -->
-    <div class="section">
-      <div class="section-header">
-        <h2>Zoho People - HR</h2>
-        <span class="badge badge-progress">In Progress</span>
+    <!-- PROGRESS OVERVIEW -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-head-left">
+          <div class="card-icon ci-red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          </div>
+          <div>
+            <div class="card-title">Module Completion</div>
+            <div class="card-sub">Delivery progress by area</div>
+          </div>
+        </div>
       </div>
-      <div class="section-body" style="display:flex;flex-direction:column;gap:1.25rem;">
+      <div class="card-body">
+        <div class="prog-row">
+          <div class="prog-meta"><span class="prog-label">Zoho Books - Core Accounting</span><span class="prog-pct">100%</span></div>
+          <div class="prog-track"><div class="prog-fill pf-green" style="width:100%"></div></div>
+        </div>
+        <div class="prog-row">
+          <div class="prog-meta"><span class="prog-label">User Onboarding</span><span class="prog-pct">67%</span></div>
+          <div class="prog-track"><div class="prog-fill pf-amber" style="width:67%"></div></div>
+        </div>
+        <div class="prog-row">
+          <div class="prog-meta"><span class="prog-label">Requisition Form</span><span class="prog-pct">80%</span></div>
+          <div class="prog-track"><div class="prog-fill pf-amber" style="width:80%"></div></div>
+        </div>
+        <div class="prog-row">
+          <div class="prog-meta"><span class="prog-label">Approval Workflow</span><span class="prog-pct">50%</span></div>
+          <div class="prog-track"><div class="prog-fill pf-amber" style="width:50%"></div></div>
+        </div>
+        <div class="prog-row">
+          <div class="prog-meta"><span class="prog-label">Attendance System</span><span class="prog-pct">0% (blocked)</span></div>
+          <div class="prog-track"><div class="prog-fill pf-red" style="width:5%"></div></div>
+        </div>
+      </div>
+    </div>
 
-        <div>
-          <p style="font-size:0.82rem;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.75rem;">User Onboarding</p>
-          <div class="users-grid">
-            <div class="user-card">
-              <div class="user-name">Accountant</div>
-              <div class="user-role">Finance</div>
-              <div class="user-status"><span class="badge badge-live">Active</span></div>
+    <!-- TWO COL: BOOKS + PEOPLE -->
+    <div class="two-col">
+
+      <!-- ZOHO BOOKS -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="card-icon ci-green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
             </div>
-            <div class="user-card">
-              <div class="user-name">Manager</div>
-              <div class="user-role">Operations</div>
-              <div class="user-status"><span class="badge badge-live">Active</span></div>
+            <div>
+              <div class="card-title">Zoho Books</div>
+              <div class="card-sub">Accounting &amp; Finance</div>
             </div>
-            <div class="user-card">
-              <div class="user-name">3rd User</div>
-              <div class="user-role">Pending</div>
-              <div class="user-status"><span class="badge badge-pending">On Hold</span></div>
+          </div>
+          <span class="badge b-live">Live</span>
+        </div>
+        <div class="card-body">
+          <ul class="checklist">
+            <li>
+              <div class="check-icon ch-done">&#10003;</div>
+              <span><strong>Inventory tracking</strong> configured and actively managed</span>
+            </li>
+            <li>
+              <div class="check-icon ch-done">&#10003;</div>
+              <span><strong>Sales recording</strong> live and being reconciled</span>
+            </li>
+            <li>
+              <div class="check-icon ch-done">&#10003;</div>
+              <span><strong>Bills &amp; purchases</strong> logged and tracked</span>
+            </li>
+            <li>
+              <div class="check-icon ch-done">&#10003;</div>
+              <span><strong>Expenses</strong> categorised and operational</span>
+            </li>
+            <li>
+              <div class="check-icon ch-done">&#10003;</div>
+              <span><strong>Accountant onboarded</strong> and active on the platform</span>
+            </li>
+            <li>
+              <div class="check-icon ch-done">&#10003;</div>
+              <span><strong>Assistant onboarded</strong> with appropriate access level</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ZOHO PEOPLE -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="card-icon ci-amber">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <div>
+              <div class="card-title">Zoho People</div>
+              <div class="card-sub">HR &amp; Attendance</div>
+            </div>
+          </div>
+          <span class="badge b-prog">In Progress</span>
+        </div>
+        <div class="card-body">
+          <ul class="checklist">
+            <li>
+              <div class="check-icon ch-done">&#10003;</div>
+              <span><strong>Requisition form</strong> built and live</span>
+            </li>
+            <li>
+              <div class="check-icon ch-prog">&#9679;</div>
+              <span><strong>Approval hierarchy</strong> &mdash; 3-level chain being configured (Supervisor &rarr; Manager &rarr; Accountant &rarr; Chairman)</span>
+            </li>
+            <li>
+              <div class="check-icon ch-prog">&#9679;</div>
+              <span><strong>Reports module</strong> &mdash; live but manager adoption in progress; number formatting issue being resolved</span>
+            </li>
+            <li>
+              <div class="check-icon ch-hold">&mdash;</div>
+              <span><strong>Attendance system</strong> &mdash; on hold; blocked by absence of physical hardware at office</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- USERS -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-head-left">
+          <div class="card-icon ci-navy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          </div>
+          <div>
+            <div class="card-title">User Onboarding Status</div>
+            <div class="card-sub">2 of 3 users active across Zoho Books and People</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="users-row">
+          <div class="user-card">
+            <div class="user-avatar">AC</div>
+            <div class="user-name">Accountant</div>
+            <div class="user-role">Finance &mdash; Full access</div>
+            <span class="badge b-live">Active</span>
+          </div>
+          <div class="user-card">
+            <div class="user-avatar">AS</div>
+            <div class="user-name">Assistant</div>
+            <div class="user-role">Finance &mdash; Zoho Books</div>
+            <span class="badge b-live">Active</span>
+          </div>
+          <div class="user-card">
+            <div class="user-avatar ua-muted">?</div>
+            <div class="user-name">3rd User</div>
+            <div class="user-role">Attendance &mdash; On hold</div>
+            <span class="badge b-hold">Pending</span>
+          </div>
+        </div>
+        <p style="font-size:0.79rem;color:var(--muted);margin-top:1rem;">
+          The third user onboarding is linked to the physical attendance hardware installation. Onboarding will proceed once the device is in place at the office.
+        </p>
+      </div>
+    </div>
+
+    <!-- OPEN ITEMS -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-head-left">
+          <div class="card-icon ci-amber">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          </div>
+          <div>
+            <div class="card-title">Open Items &amp; Resolutions</div>
+            <div class="card-sub">Active issues being worked on before month close</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body" style="display:flex;flex-direction:column;gap:0.85rem;">
+
+        <div class="issue-card">
+          <div class="issue-top">
+            <span class="issue-title">Requisition Approval Hierarchy</span>
+            <span class="badge b-prog">In Progress</span>
+          </div>
+          <p class="issue-desc">
+            The Chairman requires a 3-level approval chain: the Supervisor forwards the requisition (without approving), it then escalates to the Manager, then to the Accountant, and finally to the Chairman for final sign-off. This is being configured in Zoho People's approval workflow settings.
+          </p>
+          <p class="issue-fix">&#10003; Resolution path: Mapping Department and Designation fields per approval level. Target: complete before April close.</p>
+        </div>
+
+        <div class="issue-card">
+          <div class="issue-top">
+            <span class="issue-title">Number Formatting in Reports</span>
+            <span class="badge b-prog">In Progress</span>
+          </div>
+          <p class="issue-desc">
+            The manager prefers entering figures with both comma thousand-separators and decimal places (e.g., 1,234.56). Zoho's numeric input fields do not support comma separators at the point of entry &mdash; this is a platform-level constraint.
+          </p>
+          <p class="issue-fix">&#10003; Agreed workaround: enter clean numbers with decimals only (e.g., 1234.56). Zoho's reports layer applies display formatting automatically. Manager is being guided through this.</p>
+        </div>
+
+        <div class="issue-card">
+          <div class="issue-top">
+            <span class="issue-title">Attendance System &mdash; Hardware Dependency</span>
+            <span class="badge b-hold">Blocked</span>
+          </div>
+          <p class="issue-desc">
+            Zoho People attendance tracking requires a physical biometric or attendance device installed at the office. The device has not yet been installed. This item cannot progress until the hardware is in place.
+          </p>
+          <p class="issue-fix">&#10003; No action on consultant side required. Will resume once hardware is installed.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-head-left">
+          <div class="card-icon ci-navy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          </div>
+          <div>
+            <div class="card-title">Engagement Timeline</div>
+            <div class="card-sub">Key milestones across the engagement</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-left">
+              <div class="tl-dot dot-done"></div>
+              <div class="tl-line"></div>
+            </div>
+            <div class="tl-content">
+              <div class="tl-date">April 2026 &mdash; Week 1</div>
+              <div class="tl-title">Engagement kick-off &amp; platform access</div>
+              <div class="tl-desc">Zoho Books and Zoho People accounts set up. AnyDesk remote access established. Initial user accounts created.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-left">
+              <div class="tl-dot dot-done"></div>
+              <div class="tl-line"></div>
+            </div>
+            <div class="tl-content">
+              <div class="tl-date">April 2026 &mdash; Week 2</div>
+              <div class="tl-title">Zoho Books core modules live</div>
+              <div class="tl-desc">Inventory, sales, bills, purchases, and expenses all configured and handed over to accountant and assistant.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-left">
+              <div class="tl-dot dot-done"></div>
+              <div class="tl-line"></div>
+            </div>
+            <div class="tl-content">
+              <div class="tl-date">April 2026 &mdash; Week 3</div>
+              <div class="tl-title">Zoho People requisition form built</div>
+              <div class="tl-desc">Requisition form configured and deployed. Manager and accountant onboarded to Zoho People.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-left">
+              <div class="tl-dot dot-prog"></div>
+              <div class="tl-line"></div>
+            </div>
+            <div class="tl-content">
+              <div class="tl-date">April 2026 &mdash; Week 4 (current)</div>
+              <div class="tl-title">Approval workflow &amp; manager training</div>
+              <div class="tl-desc">Finalising 3-level approval chain configuration. Working through manager adoption of the reports module.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-left">
+              <div class="tl-dot dot-plan"></div>
+              <div class="tl-line"></div>
+            </div>
+            <div class="tl-content">
+              <div class="tl-date">May 2026</div>
+              <div class="tl-title">Month 2 &mdash; Consolidation &amp; training</div>
+              <div class="tl-desc">Chairman dashboard walkthrough. 3rd user onboarding (pending hardware). Reports adoption. Month 2 scope review.</div>
             </div>
           </div>
         </div>
-
-        <ul class="item-list">
-          <li class="item">
-            <div class="item-icon icon-done">&#10003;</div>
-            <div class="item-text"><strong>Requisition form</strong> - Up and operational. Approval hierarchy refinement in progress.</div>
-          </li>
-          <li class="item">
-            <div class="item-icon icon-progress">&#9679;</div>
-            <div class="item-text"><strong>Approval workflow</strong> - 3-level chain (Supervisor to Manager to Accountant to Chairman) being configured.</div>
-          </li>
-          <li class="item">
-            <div class="item-icon icon-pending">&#9632;</div>
-            <div class="item-text"><strong>Attendance system</strong> - On hold pending physical biometric/attendance device installation at the office.</div>
-          </li>
-          <li class="item">
-            <div class="item-icon icon-progress">&#9679;</div>
-            <div class="item-text"><strong>Manager reports</strong> - Live. Working through formatting adjustments with the manager to ensure smooth adoption.</div>
-          </li>
-        </ul>
-
       </div>
     </div>
 
     <!-- NEXT STEPS -->
-    <div class="section">
-      <div class="section-header">
-        <h2>Next Steps - Month 2</h2>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-head-left">
+          <div class="card-icon ci-red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+          </div>
+          <div>
+            <div class="card-title">Month 2 Plan</div>
+            <div class="card-sub">Priorities for the next engagement period</div>
+          </div>
+        </div>
       </div>
-      <div class="section-body">
-        <ol class="steps-list">
-          <li>Complete and test the 3-level requisition approval chain before end of April.</li>
-          <li>Train the Chairman on the Zoho Books dashboard and key reports.</li>
-          <li>Onboard the 3rd user (Zoho People) once the attendance hardware is in place.</li>
-          <li>Complete manager adoption of the reports module.</li>
-          <li>Review month 2 scope and confirm continuation terms.</li>
+      <div class="card-body">
+        <ol class="steps">
+          <li>
+            <div class="step-body">
+              <div class="step-title">Complete requisition approval chain</div>
+              <div class="step-desc">Finalise and test the 3-level approval workflow so requisitions move correctly from Supervisor through to Chairman without manual intervention.</div>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <div class="step-title">Chairman dashboard orientation</div>
+              <div class="step-desc">Walk the Chairman through the Zoho Books dashboard, key reports, and how to read the data relevant to his oversight role.</div>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <div class="step-title">Complete manager adoption of reports module</div>
+              <div class="step-desc">Ensure the manager is consistently entering data and using the reports module. Confirm the number formatting workaround is accepted.</div>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <div class="step-title">Onboard 3rd user once hardware is installed</div>
+              <div class="step-desc">Complete Zoho People attendance setup as soon as the physical device is in place at the office.</div>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <div class="step-title">Month 2 scope review and renewal</div>
+              <div class="step-desc">Agree on scope, priorities, and terms for the second month of the engagement.</div>
+            </div>
+          </li>
         </ol>
       </div>
     </div>
@@ -466,8 +990,8 @@
   </main>
 
   <footer>
-    <span>Prepared by <strong>Mustapha Ibrahim</strong> - Solutions Consultant</span>
-    <span>Last updated: <strong>April 2026</strong></span>
+    <span>Prepared by <strong>Mustapha Ibrahim</strong> &mdash; Solutions Consultant</span>
+    <span>Last updated April 2026 &middot; <a href="mailto:ibrahimmustapha1103@gmail.com">ibrahimmustapha1103@gmail.com</a></span>
   </footer>
 
 </body>
