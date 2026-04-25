@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,21 +10,48 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* ── LIGHT THEME ── */
     :root {
-      --red:       #c0392b;
-      --red-muted: #f5e6e5;
-      --navy:      #1e2d3d;
-      --bg:        #f0f2f5;
-      --surface:   #ffffff;
-      --border:    #e0e4ea;
-      --text:      #1e2d3d;
-      --muted:     #6b7a8d;
-      --green:     #1a7a36;
-      --green-bg:  #eaf5ee;
-      --amber:     #9a6500;
-      --amber-bg:  #fef8ec;
-      --blue:      #1a5fa8;
-      --blue-bg:   #eaf0fb;
+      --red:        #c0392b;
+      --red-muted:  #f5e6e5;
+      --navy:       #1e2d3d;
+      --bg:         #f0f2f5;
+      --surface:    #ffffff;
+      --surface-2:  #f7f9fc;
+      --border:     #e0e4ea;
+      --text:       #1e2d3d;
+      --muted:      #6b7a8d;
+      --green:      #1a7a36;
+      --green-bg:   #eaf5ee;
+      --amber:      #9a6500;
+      --amber-bg:   #fef8ec;
+      --blue:       #1a5fa8;
+      --blue-bg:    #eaf0fb;
+      --purple-bg:  #ede8f5;
+      --purple:     #6b3fa8;
+      --shadow:     rgba(30,45,61,0.08);
+    }
+
+    /* ── DARK THEME ── */
+    [data-theme="dark"] {
+      --red:        #e05252;
+      --red-muted:  #2a1515;
+      --navy:       #0d1520;
+      --bg:         #0f1923;
+      --surface:    #182435;
+      --surface-2:  #1e2e42;
+      --border:     #253347;
+      --text:       #dde4ee;
+      --muted:      #8a9ab0;
+      --green:      #2ecc71;
+      --green-bg:   #0d2518;
+      --amber:      #f0a500;
+      --amber-bg:   #241a00;
+      --blue:       #5b9cf6;
+      --blue-bg:    #0d1e38;
+      --purple-bg:  #1e1438;
+      --purple:     #a07de0;
+      --shadow:     rgba(0,0,0,0.25);
     }
 
     body {
@@ -33,19 +60,25 @@
       color: var(--text);
       font-size: 14px;
       line-height: 1.65;
+      transition: background 0.2s, color 0.2s;
     }
 
-    /* HERO */
-    .hero { background: var(--navy); }
+    /* ── HERO ── */
+    .hero {
+      background: var(--navy);
+      transition: background 0.2s;
+    }
+
+    [data-theme="dark"] .hero {
+      border-bottom: 1px solid var(--border);
+    }
 
     .hero-top {
-      display: flex;
-      align-items: center;
+      display: flex; align-items: center;
       justify-content: space-between;
       padding: 1.5rem 3rem;
       border-bottom: 1px solid rgba(255,255,255,0.08);
-      flex-wrap: wrap;
-      gap: 1rem;
+      flex-wrap: wrap; gap: 1rem;
     }
 
     .logo-group { display: flex; align-items: center; gap: 0.85rem; }
@@ -62,6 +95,8 @@
     .logo-group h1 { font-size: 1.15rem; font-weight: 700; color: white; }
     .logo-group p  { font-size: 0.78rem; color: rgba(255,255,255,0.45); margin-top: 1px; }
 
+    .hero-right { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+
     .hero-badge {
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.13);
@@ -71,6 +106,26 @@
       color: rgba(255,255,255,0.65);
     }
     .hero-badge strong { color: white; font-weight: 600; }
+
+    /* DARK MODE TOGGLE */
+    .theme-btn {
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.8);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .theme-btn:hover { background: rgba(255,255,255,0.18); }
+    .theme-btn svg { width: 16px; height: 16px; }
+
+    .icon-moon { display: block; }
+    .icon-sun  { display: none; }
+    [data-theme="dark"] .icon-moon { display: none; }
+    [data-theme="dark"] .icon-sun  { display: block; }
 
     .hero-stats {
       display: grid;
@@ -99,32 +154,29 @@
       letter-spacing: 0.05em;
     }
 
-    /* MAIN */
+    /* ── MAIN ── */
     main {
       max-width: 960px;
       margin: 0 auto;
       padding: 2rem 1.5rem 4rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
+      display: flex; flex-direction: column; gap: 1.5rem;
     }
 
-    /* CARD */
+    /* ── CARD ── */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
       overflow: hidden;
+      transition: background 0.2s, border-color 0.2s;
     }
 
     .card-head {
       padding: 1rem 1.5rem;
       border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
+      display: flex; align-items: center;
       justify-content: space-between;
-      gap: 0.75rem;
-      flex-wrap: wrap;
+      gap: 0.75rem; flex-wrap: wrap;
     }
 
     .card-head-left { display: flex; align-items: center; gap: 0.65rem; }
@@ -137,17 +189,17 @@
     }
     .card-icon svg { width: 15px; height: 15px; }
 
-    .ci-red   { background: var(--red-muted); color: var(--red); }
-    .ci-green { background: var(--green-bg);  color: var(--green); }
-    .ci-navy  { background: #e6eaf0;          color: var(--navy); }
-    .ci-amber { background: var(--amber-bg);  color: var(--amber); }
-    .ci-blue  { background: var(--blue-bg);   color: var(--blue); }
+    .ci-red   { background: var(--red-muted);  color: var(--red); }
+    .ci-green { background: var(--green-bg);   color: var(--green); }
+    .ci-navy  { background: var(--surface-2);  color: var(--text); }
+    .ci-amber { background: var(--amber-bg);   color: var(--amber); }
+    .ci-blue  { background: var(--blue-bg);    color: var(--blue); }
 
     .card-title { font-size: 0.9rem; font-weight: 600; color: var(--text); }
     .card-sub   { font-size: 0.76rem; color: var(--muted); }
     .card-body  { padding: 1.5rem; }
 
-    /* BADGE */
+    /* ── BADGE ── */
     .badge {
       display: inline-flex; align-items: center; gap: 0.3rem;
       font-size: 0.69rem; font-weight: 600;
@@ -159,15 +211,15 @@
       content: ''; width: 5px; height: 5px;
       border-radius: 50%; background: currentColor; opacity: 0.7;
     }
-    .b-live  { background: var(--green-bg); color: var(--green); }
-    .b-prog  { background: var(--amber-bg); color: var(--amber); }
-    .b-plan  { background: var(--blue-bg);  color: var(--blue); }
-    .b-supp  { background: #ede8f5;         color: #6b3fa8; }
+    .b-live  { background: var(--green-bg);  color: var(--green); }
+    .b-prog  { background: var(--amber-bg);  color: var(--amber); }
+    .b-plan  { background: var(--blue-bg);   color: var(--blue); }
+    .b-supp  { background: var(--purple-bg); color: var(--purple); }
 
-    /* MODULE GRID */
+    /* ── MODULE GRID ── */
     .module-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
       gap: 0.85rem;
     }
 
@@ -175,21 +227,13 @@
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 1rem 1.1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      text-decoration: none;
-      color: inherit;
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    .module-tile:hover {
-      border-color: #b0bac8;
-      box-shadow: 0 2px 8px rgba(30,45,61,0.08);
+      display: flex; flex-direction: column; gap: 0.5rem;
+      background: var(--surface);
+      transition: border-color 0.15s, box-shadow 0.15s, background 0.2s;
     }
 
     .module-tile-top {
-      display: flex;
-      align-items: center;
+      display: flex; align-items: center;
       justify-content: space-between;
     }
 
@@ -199,38 +243,21 @@
       background: var(--green);
     }
 
-    .module-name {
-      font-size: 0.86rem;
-      font-weight: 600;
-      color: var(--text);
+    .module-dot-muted {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--muted);
     }
 
-    .module-desc {
-      font-size: 0.78rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
+    .module-name { font-size: 0.86rem; font-weight: 600; color: var(--text); }
+    .module-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
 
-    .module-link {
-      font-size: 0.74rem;
-      color: var(--blue);
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 0.2rem;
-      margin-top: 0.1rem;
-    }
-
-    /* CHECKLIST */
+    /* ── CHECKLIST ── */
     .checklist { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
 
     .checklist li {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.7rem;
-      font-size: 0.85rem;
-      color: #3d4a5c;
-      line-height: 1.55;
+      display: flex; align-items: flex-start; gap: 0.7rem;
+      font-size: 0.85rem; color: var(--text); line-height: 1.55;
     }
 
     .check-icon {
@@ -240,17 +267,18 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 0.6rem;
     }
-    .ch-done  { background: var(--green-bg); color: var(--green); }
-    .ch-prog  { background: var(--amber-bg); color: var(--amber); }
+    .ch-done { background: var(--green-bg); color: var(--green); }
+    .ch-prog { background: var(--amber-bg); color: var(--amber); }
 
     strong { font-weight: 600; color: var(--text); }
 
-    /* ISSUE CARD */
+    /* ── ISSUE CARD ── */
     .issue-card {
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 1rem 1.2rem;
       display: flex; flex-direction: column; gap: 0.45rem;
+      transition: background 0.2s, border-color 0.2s;
     }
 
     .issue-top {
@@ -259,11 +287,8 @@
       gap: 0.5rem; flex-wrap: wrap;
     }
 
-    .issue-title { font-size: 0.86rem; font-weight: 600; color: var(--text); }
-
-    .issue-desc {
-      font-size: 0.81rem; color: var(--muted); line-height: 1.55;
-    }
+    .issue-title  { font-size: 0.86rem; font-weight: 600; color: var(--text); }
+    .issue-desc   { font-size: 0.81rem; color: var(--muted); line-height: 1.55; }
 
     .issue-action {
       font-size: 0.8rem; color: var(--green); font-weight: 500;
@@ -271,14 +296,14 @@
       border-top: 1px solid var(--green-bg);
     }
 
-    /* SUPPORT BOX */
+    /* ── SUPPORT BOX ── */
     .support-box {
-      background: #f7f9fc;
+      background: var(--surface-2);
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 1.1rem 1.3rem;
-      display: flex; gap: 1rem;
-      align-items: flex-start;
+      display: flex; gap: 1rem; align-items: flex-start;
+      transition: background 0.2s;
     }
 
     .support-box-icon {
@@ -288,18 +313,16 @@
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
+    [data-theme="dark"] .support-box-icon { background: var(--border); }
     .support-box-icon svg { width: 18px; height: 18px; color: white; }
 
     .support-box-title { font-size: 0.88rem; font-weight: 600; color: var(--text); }
     .support-box-desc  { font-size: 0.81rem; color: var(--muted); margin-top: 0.2rem; line-height: 1.55; }
 
-    /* TIMELINE */
+    /* ── TIMELINE ── */
     .timeline { display: flex; flex-direction: column; }
 
-    .tl-item {
-      display: flex; gap: 1rem;
-      padding-bottom: 1.2rem;
-    }
+    .tl-item { display: flex; gap: 1rem; padding-bottom: 1.2rem; }
     .tl-item:last-child { padding-bottom: 0; }
 
     .tl-left {
@@ -312,14 +335,11 @@
       border-radius: 50%; margin-top: 4px; flex-shrink: 0;
     }
 
-    .tl-line {
-      flex: 1; width: 2px;
-      background: var(--border); margin-top: 4px;
-    }
+    .tl-line { flex: 1; width: 2px; background: var(--border); margin-top: 4px; }
     .tl-item:last-child .tl-line { display: none; }
 
     .dot-done { background: var(--green); }
-    .dot-prog { background: #f0a500; }
+    .dot-prog { background: var(--amber); }
     .dot-plan { background: var(--border); border: 2px solid var(--muted); }
 
     .tl-date {
@@ -330,7 +350,7 @@
     .tl-title { font-size: 0.86rem; font-weight: 600; color: var(--text); }
     .tl-desc  { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; line-height: 1.5; }
 
-    /* PLAN LIST */
+    /* ── PLAN LIST ── */
     .plan-list {
       counter-reset: p;
       list-style: none;
@@ -352,10 +372,29 @@
       flex-shrink: 0; margin-top: 1px;
     }
 
+    [data-theme="dark"] .plan-list li::before {
+      background: var(--border); color: var(--text);
+    }
+
     .plan-title { font-size: 0.86rem; font-weight: 600; color: var(--text); }
     .plan-desc  { font-size: 0.79rem; color: var(--muted); margin-top: 0.15rem; }
 
-    /* FOOTER */
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── EXTERNAL LINK ── */
+    .ext-link {
+      font-size: 0.75rem; color: var(--blue); font-weight: 500;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 0.25rem;
+    }
+    .ext-link:hover { text-decoration: underline; }
+    .ext-link svg { width: 11px; height: 11px; }
+
+    /* ── FOOTER ── */
     footer {
       max-width: 960px;
       margin: 0 auto 2rem;
@@ -368,9 +407,9 @@
     footer a { color: var(--red); text-decoration: none; }
 
     @media (max-width: 640px) {
-      .hero-top  { padding: 1.25rem 1.5rem; }
+      .hero-top   { padding: 1.25rem 1.5rem; }
       .hero-stats { grid-template-columns: repeat(2, 1fr); padding: 1.5rem; }
-      main { padding: 1.25rem 1rem; }
+      main        { padding: 1.25rem 1rem; }
     }
   </style>
 </head>
@@ -386,7 +425,13 @@
           <p>Zoho Systems &mdash; Month 1 Support Report</p>
         </div>
       </div>
-      <div class="hero-badge">Reporting period: <strong>April 2026</strong></div>
+      <div class="hero-right">
+        <div class="hero-badge">Reporting period: <strong>April 2026</strong></div>
+        <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+      </div>
     </div>
     <div class="hero-stats">
       <div class="hero-stat">
@@ -425,8 +470,8 @@
         <span class="badge b-live">Active Support</span>
       </div>
       <div class="card-body">
-        <p style="font-size:0.88rem;color:#3d4a5c;line-height:1.75;max-width:780px;">
-          Fuel Smart is now fully set up on Zoho Books and Zoho People. Both platforms have been configured, all staff members have been onboarded, and the business is actively using the systems for day-to-day operations. The engagement has moved into ongoing support mode: monitoring usage, handling staff queries, making refinements as the team gets comfortable with the tools, and ensuring the systems are being used correctly. Remote support is provided via AnyDesk, allowing issues to be resolved quickly without requiring a physical visit.
+        <p style="font-size:0.88rem;color:var(--text);line-height:1.75;max-width:780px;">
+          Fuel Smart is now fully implemented on Zoho Books and Zoho People. Both platforms have been configured, all staff members have been onboarded, and the business is actively using the systems for day-to-day operations. The engagement has moved into ongoing support mode: monitoring usage, handling staff queries, making refinements as the team settles into the tools, and ensuring everything is being used correctly. Remote support is delivered via AnyDesk, allowing issues to be resolved quickly without requiring a physical visit.
         </p>
       </div>
     </div>
@@ -453,48 +498,44 @@
               <div style="font-size:0.88rem;font-weight:600;color:var(--text);">Zoho Books</div>
               <div style="font-size:0.76rem;color:var(--muted);">Accounting and financial management</div>
             </div>
-            <a href="https://books.zoho.com/app" target="_blank" style="font-size:0.75rem;color:var(--blue);font-weight:500;text-decoration:none;display:flex;align-items:center;gap:0.25rem;">
+            <a class="ext-link" href="https://books.zoho.com" target="_blank">
               Open Zoho Books
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             </a>
           </div>
           <div class="module-grid">
-            <a class="module-tile" href="https://books.zoho.com/app#/inventory" target="_blank">
+            <div class="module-tile">
               <div class="module-tile-top">
                 <span class="module-name">Inventory</span>
                 <div class="module-dot"></div>
               </div>
-              <div class="module-desc">Items and stock levels tracked and managed within the platform.</div>
-              <span class="module-link">View module &#8599;</span>
-            </a>
-            <a class="module-tile" href="https://books.zoho.com/app#/salesorders" target="_blank">
+              <div class="module-desc">Stock levels automatically updated as products are sold or purchased. Quantities tracked in real time without manual entry.</div>
+            </div>
+            <div class="module-tile">
               <div class="module-tile-top">
                 <span class="module-name">Sales</span>
                 <div class="module-dot"></div>
               </div>
-              <div class="module-desc">Sales transactions recorded, invoiced, and reconciled.</div>
-              <span class="module-link">View module &#8599;</span>
-            </a>
-            <a class="module-tile" href="https://books.zoho.com/app#/bills" target="_blank">
+              <div class="module-desc">Sales transactions recorded, invoiced, and reconciled against inventory.</div>
+            </div>
+            <div class="module-tile">
               <div class="module-tile-top">
                 <span class="module-name">Bills &amp; Purchases</span>
                 <div class="module-dot"></div>
               </div>
-              <div class="module-desc">Vendor bills and purchase orders tracked and managed.</div>
-              <span class="module-link">View module &#8599;</span>
-            </a>
-            <a class="module-tile" href="https://books.zoho.com/app#/expenses" target="_blank">
+              <div class="module-desc">Vendor bills and purchase orders tracked and managed within the platform.</div>
+            </div>
+            <div class="module-tile">
               <div class="module-tile-top">
                 <span class="module-name">Expenses</span>
                 <div class="module-dot"></div>
               </div>
-              <div class="module-desc">Business expenses logged, categorised, and recorded.</div>
-              <span class="module-link">View module &#8599;</span>
-            </a>
+              <div class="module-desc">Business expenses logged, categorised, and recorded for reconciliation.</div>
+            </div>
           </div>
         </div>
 
-        <hr style="border:none;border-top:1px solid var(--border);" />
+        <hr class="divider" />
 
         <!-- Zoho People -->
         <div>
@@ -503,43 +544,39 @@
               <div style="font-size:0.88rem;font-weight:600;color:var(--text);">Zoho People</div>
               <div style="font-size:0.76rem;color:var(--muted);">HR, attendance, and internal workflows</div>
             </div>
-            <a href="https://people.zoho.com/home" target="_blank" style="font-size:0.75rem;color:var(--blue);font-weight:500;text-decoration:none;display:flex;align-items:center;gap:0.25rem;">
+            <a class="ext-link" href="https://people.zoho.com" target="_blank">
               Open Zoho People
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             </a>
           </div>
           <div class="module-grid">
-            <a class="module-tile" href="https://people.zoho.com/home#leavetracker" target="_blank">
+            <div class="module-tile">
               <div class="module-tile-top">
-                <span class="module-name">HR Records</span>
+                <span class="module-name">Staff Profiles</span>
                 <div class="module-dot"></div>
               </div>
-              <div class="module-desc">All staff profiles created and access configured per role.</div>
-              <span class="module-link">View module &#8599;</span>
-            </a>
-            <a class="module-tile" href="https://people.zoho.com/home#forms" target="_blank">
+              <div class="module-desc">All staff accounts created with access levels set per role. Everyone is onboarded and active.</div>
+            </div>
+            <div class="module-tile">
               <div class="module-tile-top">
                 <span class="module-name">Requisition Form</span>
                 <div class="module-dot"></div>
               </div>
-              <div class="module-desc">Internal purchase requisition form built and live. Staff submit via this form.</div>
-              <span class="module-link">View module &#8599;</span>
-            </a>
-            <a class="module-tile" href="https://people.zoho.com/home#reports" target="_blank">
+              <div class="module-desc">Custom internal purchase requisition form built and live. Staff submit requests through the form and it routes for approval.</div>
+            </div>
+            <div class="module-tile">
               <div class="module-tile-top">
                 <span class="module-name">Reports</span>
                 <div class="module-dot"></div>
               </div>
-              <div class="module-desc">Manager reporting module configured and in active use.</div>
-              <span class="module-link">View module &#8599;</span>
-            </a>
-            <div class="module-tile" style="opacity:0.55;cursor:default;">
+              <div class="module-desc">Custom reporting module set up for management. Manager is actively entering and reviewing data.</div>
+            </div>
+            <div class="module-tile" style="opacity:0.5;">
               <div class="module-tile-top">
                 <span class="module-name">Attendance</span>
-                <div style="width:8px;height:8px;border-radius:50%;background:var(--muted);"></div>
+                <div class="module-dot-muted"></div>
               </div>
-              <div class="module-desc">Awaiting physical device installation at the office before this can go live.</div>
-              <span style="font-size:0.74rem;color:var(--muted);font-weight:500;">Pending hardware</span>
+              <div class="module-desc">Configured and ready. Waiting on the office to implement a physical attendance book. Once in place, staff will fill it in daily and records will be logged into Zoho.</div>
             </div>
           </div>
         </div>
@@ -568,21 +605,21 @@
           </div>
           <div>
             <div class="support-box-title">AnyDesk Remote Access</div>
-            <div class="support-box-desc">AnyDesk is installed on the relevant machines at Fuel Smart's office. This allows the consultant to remotely access the system, resolve issues, make configuration changes, and provide hands-on guidance without needing to be on-site. Support sessions can be initiated quickly when a staff member reports an issue.</div>
+            <div class="support-box-desc">AnyDesk is installed on the relevant machines at Fuel Smart's office. This allows the consultant to remotely access the system, make configuration changes, resolve issues, and provide hands-on guidance without needing to be on-site. Support sessions can be initiated promptly whenever staff report a problem or need assistance.</div>
           </div>
         </div>
         <ul class="checklist">
           <li>
             <div class="check-icon ch-done">&#10003;</div>
-            <span><strong>Configuration changes</strong> &mdash; approvals, form fields, user permissions handled remotely via AnyDesk</span>
+            <span><strong>Configuration changes</strong> &mdash; approval settings, form fields, user permissions all handled remotely</span>
           </li>
           <li>
             <div class="check-icon ch-done">&#10003;</div>
-            <span><strong>Staff guidance</strong> &mdash; walking users through the system in real time during support sessions</span>
+            <span><strong>Hands-on guidance</strong> &mdash; walking staff through the system in real time during live sessions</span>
           </li>
           <li>
             <div class="check-icon ch-done">&#10003;</div>
-            <span><strong>Issue resolution</strong> &mdash; problems reported by staff diagnosed and resolved without requiring a site visit</span>
+            <span><strong>Issue resolution</strong> &mdash; problems diagnosed and resolved without requiring a site visit</span>
           </li>
         </ul>
       </div>
@@ -609,7 +646,7 @@
             <span class="badge b-prog">In Progress</span>
           </div>
           <p class="issue-desc">
-            Refining the approval chain on the requisition form to match the Chairman's preferred flow: the Supervisor forwards the request (without approving it), it then moves to the Manager, then the Accountant, and finally to the Chairman for final sign-off. This is a configuration update to the existing form, not a rebuild.
+            Refining the approval chain on the requisition form to match the Chairman's preferred flow. The Supervisor forwards the request without approving it, it then routes to the Manager, then the Accountant, and finally to the Chairman for final sign-off. This is a configuration update to the existing form, not a rebuild.
           </p>
           <p class="issue-action">&#10003; Being configured in Zoho People approval settings. Target: complete before end of April.</p>
         </div>
@@ -620,20 +657,20 @@
             <span class="badge b-prog">In Progress</span>
           </div>
           <p class="issue-desc">
-            The manager has expressed a preference for entering figures with comma thousand-separators alongside decimals (e.g. 1,234.56). Zoho does not support both in the same input field by design. The agreed approach is for the manager to enter clean numeric values, which the system then displays in a formatted way on reports.
+            The manager prefers entering figures with comma thousand-separators alongside decimals (e.g. 1,234.56). Zoho does not support both formats in the same input field by design. The agreed workaround is to enter clean numeric values which the system then formats correctly on display in reports.
           </p>
-          <p class="issue-action">&#10003; Manager is being guided through the correct entry method during support sessions.</p>
+          <p class="issue-action">&#10003; Manager is being guided through the correct entry method in support sessions.</p>
         </div>
 
         <div class="issue-card">
           <div class="issue-top">
-            <span class="issue-title">Attendance &mdash; Awaiting Hardware</span>
-            <span class="badge b-prog" style="background:#f0f2f5;color:var(--muted);">Blocked Externally</span>
+            <span class="issue-title">Attendance &mdash; Awaiting Physical Book</span>
+            <span class="badge b-prog" style="background:var(--surface-2);color:var(--muted);">Blocked Externally</span>
           </div>
           <p class="issue-desc">
-            The Zoho People attendance module is fully configured on the platform side. It cannot go live until a physical attendance device (biometric or otherwise) is installed at the office. This is outside the consultant's scope and depends on the office taking action to procure and install the hardware.
+            The Zoho attendance module is configured and ready on the platform. It is pending the office setting up a physical attendance book for daily manual sign-in. Once that is in place, staff will fill in attendance daily and those records will be logged into Zoho regularly to keep the system up to date.
           </p>
-          <p class="issue-action">&#10003; No action required on the Zoho side. Will proceed immediately once hardware is in place.</p>
+          <p class="issue-action">&#10003; No further setup needed on the consultant's side. Will proceed once the attendance book is in use.</p>
         </div>
 
       </div>
@@ -659,7 +696,7 @@
             <div>
               <div class="tl-date">April 2026 &mdash; Week 1</div>
               <div class="tl-title">Engagement start &mdash; platform access and account setup</div>
-              <div class="tl-desc">Zoho Books and Zoho People accounts provisioned. AnyDesk installed for remote access. Initial structure set up.</div>
+              <div class="tl-desc">Zoho Books and Zoho People provisioned. AnyDesk installed for remote access. Initial structure and user accounts created.</div>
             </div>
           </div>
           <div class="tl-item">
@@ -667,15 +704,15 @@
             <div>
               <div class="tl-date">April 2026 &mdash; Week 2</div>
               <div class="tl-title">Zoho Books fully configured and handed over</div>
-              <div class="tl-desc">Inventory, sales, bills, purchases, and expenses all set up. Accountant and assistant onboarded and trained on the platform.</div>
+              <div class="tl-desc">Inventory, sales, bills, purchases, and expenses all set up. Accountant and assistant onboarded, trained, and using the platform.</div>
             </div>
           </div>
           <div class="tl-item">
             <div class="tl-left"><div class="tl-dot dot-done"></div><div class="tl-line"></div></div>
             <div>
               <div class="tl-date">April 2026 &mdash; Week 3</div>
-              <div class="tl-title">Zoho People HR setup and requisition form live</div>
-              <div class="tl-desc">All staff profiles created. Requisition form built and deployed. Manager and accountant onboarded to Zoho People.</div>
+              <div class="tl-title">Zoho People live &mdash; HR setup and requisition form deployed</div>
+              <div class="tl-desc">All staff profiles created. Custom requisition form built and deployed. Remaining staff onboarded to Zoho People.</div>
             </div>
           </div>
           <div class="tl-item">
@@ -683,15 +720,15 @@
             <div>
               <div class="tl-date">April 2026 &mdash; Week 4</div>
               <div class="tl-title">Ongoing support &mdash; approval chain and adoption</div>
-              <div class="tl-desc">Refining the requisition approval flow per the Chairman's instructions. Supporting the manager through reports usage.</div>
+              <div class="tl-desc">Refining the requisition approval flow. Supporting the manager through consistent reports usage. Resolving minor adoption issues.</div>
             </div>
           </div>
           <div class="tl-item">
             <div class="tl-left"><div class="tl-dot dot-plan"></div><div class="tl-line"></div></div>
             <div>
               <div class="tl-date">May 2026</div>
-              <div class="tl-title">Month 2 &mdash; continuation and expansion</div>
-              <div class="tl-desc">Chairman orientation. Attendance setup once hardware is in place. Continued support across all modules. Scope review for month 2.</div>
+              <div class="tl-title">Month 2 &mdash; consolidation, training, and expansion</div>
+              <div class="tl-desc">Chairman dashboard walkthrough. Attendance go-live once physical book is in place. Continued support across all modules. Month 2 scope review.</div>
             </div>
           </div>
         </div>
@@ -717,31 +754,31 @@
           <li>
             <div>
               <div class="plan-title">Chairman dashboard orientation</div>
-              <div class="plan-desc">Walk the Chairman through Zoho Books, key reports, and how to read what matters to him at a management level.</div>
+              <div class="plan-desc">Walk the Chairman through Zoho Books, key reports, and how to read what is relevant to his oversight role.</div>
             </div>
           </li>
           <li>
             <div>
               <div class="plan-title">Complete the approval chain configuration</div>
-              <div class="plan-desc">Finish and test the 3-level requisition approval flow so it works correctly from Supervisor all the way to the Chairman.</div>
+              <div class="plan-desc">Finish and test the 3-level requisition approval flow end-to-end so requests move correctly from Supervisor all the way to the Chairman.</div>
             </div>
           </li>
           <li>
             <div>
               <div class="plan-title">Bed in manager adoption of the reports module</div>
-              <div class="plan-desc">Ensure the manager is entering data consistently and that the number formatting issue is fully resolved in practice.</div>
+              <div class="plan-desc">Ensure the manager is entering data consistently and that the number formatting approach is working well in practice.</div>
             </div>
           </li>
           <li>
             <div>
-              <div class="plan-title">Attendance system go-live (subject to hardware)</div>
-              <div class="plan-desc">Once the physical attendance device is installed, configure the Zoho People integration and onboard remaining staff to it.</div>
+              <div class="plan-title">Attendance system go-live (subject to physical book)</div>
+              <div class="plan-desc">Once the office has the physical attendance book in use, configure the Zoho People integration and begin logging records.</div>
             </div>
           </li>
           <li>
             <div>
-              <div class="plan-title">Month 2 scope and renewal confirmation</div>
-              <div class="plan-desc">Review what worked well, identify any gaps, and agree on the scope and terms for continuing into May.</div>
+              <div class="plan-title">Month 2 scope and renewal</div>
+              <div class="plan-desc">Review what has worked well, identify any gaps, and agree on the scope and terms for continuing into May.</div>
             </div>
           </li>
         </ol>
@@ -754,6 +791,20 @@
     <span>Prepared by <strong>Mustapha Ibrahim</strong> &mdash; Solutions Consultant</span>
     <span>Last updated April 2026 &middot; <a href="mailto:ibrahimmustapha1103@gmail.com">ibrahimmustapha1103@gmail.com</a></span>
   </footer>
+
+  <script>
+    (function () {
+      var saved = localStorage.getItem('fs-theme');
+      if (saved) document.documentElement.setAttribute('data-theme', saved);
+    })();
+
+    function toggleTheme() {
+      var current = document.documentElement.getAttribute('data-theme');
+      var next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('fs-theme', next);
+    }
+  </script>
 
 </body>
 </html>
